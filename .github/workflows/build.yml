@@ -68,6 +68,21 @@ on:
         required: false
         type: string
         default: Wild
+      stock_identity:
+        description: "Force an exact stock kernel version string (build-time rename, no runtime spoof)"
+        required: false
+        type: boolean
+        default: true
+      stock_uts:
+        description: "Stock UTS_RELEASE to report"
+        required: false
+        type: string
+        default: "5.10.168-android12-9-00003-g828a3b1f7462-ab10564101"
+      stock_build_timestamp:
+        description: "Stock UTS build timestamp"
+        required: false
+        type: string
+        default: "Wed Jul 26 12:50:50 UTC 2023"
       keep_kmi:
         required: false
         type: boolean
@@ -401,6 +416,14 @@ jobs:
           brand_name: ${{ inputs.brand_name }}
           keep_kmi: ${{ inputs.keep_kmi }}
 
+      - name: Apply Stock Kernel Identity
+        if: inputs.stock_identity
+        uses: ./.github/actions/stock-identity
+        with:
+          enabled: ${{ inputs.stock_identity }}
+          uts_release: ${{ inputs.stock_uts }}
+          build_timestamp: ${{ inputs.stock_build_timestamp }}
+
       - name: Remove Protected Exports
         uses: ./.github/actions/remove-protected-exports
 
@@ -487,6 +510,13 @@ jobs:
         with:
           version: ${{ inputs.version }}
           page_size: ${{ inputs.page_size }}
+
+      - name: Verify Stock Kernel Identity
+        if: inputs.stock_identity && startsWith(inputs.kernel_version, '5.10')
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./tools/verify-stock-string.sh "${{ inputs.stock_uts }}" | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Get Cache Stats
         uses: ./.github/actions/cache-stats

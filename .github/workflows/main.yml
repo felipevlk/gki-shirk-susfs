@@ -51,7 +51,19 @@ on:
       brand_name:
         description: "Kernel Branding (empty = stock version string)"
         type: string
-        default: Wild
+        default: ""
+      stock_identity:
+        description: "Force an exact stock kernel version string (build-time rename)"
+        type: boolean
+        default: true
+      stock_uts:
+        description: "Stock UTS_RELEASE to report"
+        type: string
+        default: "5.10.168-android12-9-00003-g828a3b1f7462-ab10564101"
+      stock_build_timestamp:
+        description: "Stock UTS build timestamp"
+        type: string
+        default: "Wed Jul 26 12:50:50 UTC 2023"
       keep_kmi:
         description: "Keep stock KMI generation suffix in kernel version (fix #265)"
         type: boolean
@@ -85,27 +97,27 @@ on:
       use_nomount:
         description: "NoMount"
         type: boolean
-        default: true
+        default: false
       use_bbg:
         description: "Baseband Guard"
         type: boolean
-        default: true
+        default: false
       use_net:
         description: "Networking"
         type: boolean
-        default: true
+        default: false
       use_ds:
         description: "DroidSpaces"
         type: boolean
-        default: true
+        default: false
       use_ntsync:
         description: "NTSync"
         type: boolean
-        default: true
+        default: false
       use_ptrace:
         description: "Ptrace Patch"
         type: boolean
-        default: true
+        default: false
       use_unicode:
         description: "Unicode Fix"
         type: boolean
@@ -113,7 +125,7 @@ on:
       use_bpf:
         description: "BPF Stack (BTF + eBPF + FUSE-BPF)"
         type: boolean
-        default: true
+        default: false
       use_perf:
         description: "Performance"
         type: boolean
@@ -650,7 +662,10 @@ jobs:
       ksu_branch: ${{ needs.resolve-sources.outputs.kernelsu_commit }}
       anykernel3_commit: ${{ needs.resolve-sources.outputs.anykernel3_commit }}
       droidspaces_commit: ${{ needs.resolve-sources.outputs.droidspaces_commit }}
-      brand_name: ${{ inputs.brand_name || 'Wild' }}
+      brand_name: ${{ inputs.brand_name }}
+      stock_identity: ${{ inputs.stock_identity }}
+      stock_uts: ${{ inputs.stock_uts }}
+      stock_build_timestamp: ${{ inputs.stock_build_timestamp }}
       keep_kmi: ${{ inputs.keep_kmi || false }}
       os_patch_level: ${{ inputs.os_patch_level || 'All' }}
       allow_version_mismatch: ${{ inputs.allow_version_mismatch || false }}
@@ -682,7 +697,10 @@ jobs:
       ksu_branch: ${{ needs.resolve-sources.outputs.kernelsu_commit }}
       anykernel3_commit: ${{ needs.resolve-sources.outputs.anykernel3_commit }}
       droidspaces_commit: ${{ needs.resolve-sources.outputs.droidspaces_commit }}
-      brand_name: ${{ inputs.brand_name || 'Wild' }}
+      brand_name: ${{ inputs.brand_name }}
+      stock_identity: ${{ inputs.stock_identity }}
+      stock_uts: ${{ inputs.stock_uts }}
+      stock_build_timestamp: ${{ inputs.stock_build_timestamp }}
       keep_kmi: ${{ inputs.keep_kmi || false }}
       os_patch_level: ${{ inputs.os_patch_level || 'All' }}
       allow_version_mismatch: ${{ inputs.allow_version_mismatch || false }}
@@ -714,7 +732,10 @@ jobs:
       ksu_branch: ${{ needs.resolve-sources.outputs.kernelsu_commit }}
       anykernel3_commit: ${{ needs.resolve-sources.outputs.anykernel3_commit }}
       droidspaces_commit: ${{ needs.resolve-sources.outputs.droidspaces_commit }}
-      brand_name: ${{ inputs.brand_name || 'Wild' }}
+      brand_name: ${{ inputs.brand_name }}
+      stock_identity: ${{ inputs.stock_identity }}
+      stock_uts: ${{ inputs.stock_uts }}
+      stock_build_timestamp: ${{ inputs.stock_build_timestamp }}
       keep_kmi: ${{ inputs.keep_kmi || false }}
       os_patch_level: ${{ inputs.os_patch_level || 'All' }}
       allow_version_mismatch: ${{ inputs.allow_version_mismatch || false }}
@@ -746,7 +767,10 @@ jobs:
       ksu_branch: ${{ needs.resolve-sources.outputs.kernelsu_commit }}
       anykernel3_commit: ${{ needs.resolve-sources.outputs.anykernel3_commit }}
       droidspaces_commit: ${{ needs.resolve-sources.outputs.droidspaces_commit }}
-      brand_name: ${{ inputs.brand_name || 'Wild' }}
+      brand_name: ${{ inputs.brand_name }}
+      stock_identity: ${{ inputs.stock_identity }}
+      stock_uts: ${{ inputs.stock_uts }}
+      stock_build_timestamp: ${{ inputs.stock_build_timestamp }}
       keep_kmi: ${{ inputs.keep_kmi || false }}
       os_patch_level: ${{ inputs.os_patch_level || 'All' }}
       allow_version_mismatch: ${{ inputs.allow_version_mismatch || false }}
@@ -778,7 +802,10 @@ jobs:
       ksu_branch: ${{ needs.resolve-sources.outputs.kernelsu_commit }}
       anykernel3_commit: ${{ needs.resolve-sources.outputs.anykernel3_commit }}
       droidspaces_commit: ${{ needs.resolve-sources.outputs.droidspaces_commit }}
-      brand_name: ${{ inputs.brand_name || 'Wild' }}
+      brand_name: ${{ inputs.brand_name }}
+      stock_identity: ${{ inputs.stock_identity }}
+      stock_uts: ${{ inputs.stock_uts }}
+      stock_build_timestamp: ${{ inputs.stock_build_timestamp }}
       keep_kmi: ${{ inputs.keep_kmi || false }}
       os_patch_level: ${{ inputs.os_patch_level || 'All' }}
       allow_version_mismatch: ${{ inputs.allow_version_mismatch || false }}
@@ -810,7 +837,10 @@ jobs:
       ksu_branch: ${{ needs.resolve-sources.outputs.kernelsu_commit }}
       anykernel3_commit: ${{ needs.resolve-sources.outputs.anykernel3_commit }}
       droidspaces_commit: ${{ needs.resolve-sources.outputs.droidspaces_commit }}
-      brand_name: ${{ inputs.brand_name || 'Wild' }}
+      brand_name: ${{ inputs.brand_name }}
+      stock_identity: ${{ inputs.stock_identity }}
+      stock_uts: ${{ inputs.stock_uts }}
+      stock_build_timestamp: ${{ inputs.stock_build_timestamp }}
       keep_kmi: ${{ inputs.keep_kmi || false }}
       os_patch_level: ${{ inputs.os_patch_level || 'All' }}
       allow_version_mismatch: ${{ inputs.allow_version_mismatch || false }}
@@ -842,7 +872,10 @@ jobs:
       ksu_branch: ${{ needs.resolve-sources.outputs.kernelsu_commit }}
       anykernel3_commit: ${{ needs.resolve-sources.outputs.anykernel3_commit }}
       droidspaces_commit: ${{ needs.resolve-sources.outputs.droidspaces_commit }}
-      brand_name: ${{ inputs.brand_name || 'Wild' }}
+      brand_name: ${{ inputs.brand_name }}
+      stock_identity: ${{ inputs.stock_identity }}
+      stock_uts: ${{ inputs.stock_uts }}
+      stock_build_timestamp: ${{ inputs.stock_build_timestamp }}
       keep_kmi: ${{ inputs.keep_kmi || false }}
       os_patch_level: ${{ inputs.os_patch_level || 'All' }}
       allow_version_mismatch: ${{ inputs.allow_version_mismatch || false }}

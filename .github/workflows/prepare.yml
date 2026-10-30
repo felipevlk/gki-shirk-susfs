@@ -65,7 +65,22 @@ on:
         description: "Kernel branding text appended to the version string (empty = stock)"
         required: false
         type: string
-        default: Wild
+        default: ""
+      stock_identity:
+        description: "Force an exact stock kernel version string (build-time rename)"
+        required: false
+        type: boolean
+        default: true
+      stock_uts:
+        description: "Stock UTS_RELEASE to report"
+        required: false
+        type: string
+        default: "5.10.168-android12-9-00003-g828a3b1f7462-ab10564101"
+      stock_build_timestamp:
+        description: "Stock UTS build timestamp"
+        required: false
+        type: string
+        default: "Wed Jul 26 12:50:50 UTC 2023"
       keep_kmi:
         description: "Keep stock KMI generation suffix in kernel version (fix #265)"
         required: false
@@ -344,6 +359,9 @@ jobs:
       anykernel3_commit: ${{ inputs.anykernel3_commit }}
       droidspaces_commit: ${{ inputs.droidspaces_commit }}
       brand_name: ${{ inputs.brand_name }}
+      stock_identity: ${{ inputs.stock_identity }}
+      stock_uts: ${{ inputs.stock_uts }}
+      stock_build_timestamp: ${{ inputs.stock_build_timestamp }}
       keep_kmi: ${{ inputs.keep_kmi }}
       allow_version_mismatch: ${{ inputs.allow_version_mismatch }}
       use_cache: ${{ inputs.use_cache }}
